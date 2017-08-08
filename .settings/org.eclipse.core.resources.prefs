@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/wifitz/joblaunchers/KeLiuLiangJobLauncher.java=GBK
+encoding//src/main/java/com/wifitz/joblaunchers/StartUp.java=GBK
+encoding//src/main/java/com/wifitz/joblaunchers/StoreJobLauncher.java=GBK
+encoding//src/main/java/com/wifitz/mapreduce/InToStoreMapper.java=GBK
+encoding//src/main/java/com/wifitz/mapreduce/InToStoreReducer.java=GBK
+encoding//src/main/java/com/wifitz/mapreduce/MacMergedMapper.java=GBK
+encoding//src/main/java/com/wifitz/utils/SomeText.java=GBK
+encoding/<project>=GBK
