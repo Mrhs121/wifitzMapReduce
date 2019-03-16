@@ -1,6 +1,6 @@
 package com.wifitz.utils;
 
-public class SomeText {
+public class Configuration {
 
 	public static final String INPUT_ROOT_PATH = "/wifitzlogs/usr/wifitzlogs/";  // 文件的输入路径
 	//public static final String INPUT_ROOT_PATH = "/input/";  // 文件的输入路径

@@ -2,7 +2,7 @@ package com.wifitz.joblaunchers;
 
 import java.io.IOException;
 
-import org.apache.hadoop.conf.Configuration;
+import com.wifitz.utils.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -16,16 +16,15 @@ import com.wifitz.mapreduce.InToStoreReducer;
 import com.wifitz.mapreduce.InToStoreReducer.VisitLivenessRecorder2;
 import com.wifitz.utils.HdfsUtil;
 import com.wifitz.utils.JsonUtil;
-import com.wifitz.utils.SomeText;
 import com.wifitz.utils.TimeStrUtil;
 
 public class StoreJobLauncher implements IJob{
 	// private static Configuration configuration = new Configuration();
 	// private static Logger logger = Logger.getLogger(StoreJobLauncher.class);
 
-	// Äê£º2017 ÔÂ2017_6 ÈÕ2017_5_21 Ê±2017_5_21.17
-	// ÊäÈëµÄ²ÎÊýÓ¦¸ÃÊÇ µÚÒ»¸öÓÃ»§µÄÃû×Ö µÚ¶þ¸öÊ±¼ä µÚÈý¸öÎªÊ±¼äãÐ£¨ÄêÔÂÈÕÊ±£©£¨2017 2017_5 2017_5_21 2017_5_21.11£©
-	// µÚËÄ¸ö²ÎÊýÎªÉè±¸µÄid
+	// ï¿½ê£º2017 ï¿½ï¿½2017_6 ï¿½ï¿½2017_5_21 Ê±2017_5_21.17
+	// ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¶ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÊ±ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½2017 2017_5 2017_5_21 2017_5_21.11ï¿½ï¿½
+	// ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½è±¸ï¿½ï¿½id
 	@SuppressWarnings("deprecation")
 	/**
 	 * 
@@ -45,23 +44,23 @@ public class StoreJobLauncher implements IJob{
 		}
 		
 		
-		// args[0] + SomeText.UNDERLINE + args[1] ÎÄ¼þÃû
-		// ÊäÈëµÄ²ÎÊýÓ¦¸ÃÊÇ µÚÒ»¸öÓÃ»§µÄÃû×Ö µÚ¶þ¸öÊ±¼äSomeText.getInputFilesName(args[3], args[1])
-		String[] otherArgs = { SomeText.INPUT_ROOT_PATH + SomeText.getInputFilesName(args[3], args[1]), // ÐèÒª·ÖÎöµÄÎÄ¼þµÄÂ·¾¶
+		// args[0] + Configuration.UNDERLINE + args[1] ï¿½Ä¼ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¶ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Configuration.getInputFilesName(args[3], args[1])
+		String[] otherArgs = { Configuration.INPUT_ROOT_PATH + Configuration.getInputFilesName(args[3], args[1]), // ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 		//String[] otherArgs = { args[4], 			
-				SomeText.RUDIANLIANG_MAC_ROOT_PATH + args[0] + "/" + SomeText.getTimeThresholdPath(args[2])
-				+ TimeStrUtil.changeTime2Path(args[1], args[2]) + SomeText.getFileName(args[3], args[1]), // ·ÖÎöµÃµ½µÄmacÐÅÏ¢µÄÊä³öÂ·¾¶
+				Configuration.RUDIANLIANG_MAC_ROOT_PATH + args[0] + "/" + Configuration.getTimeThresholdPath(args[2])
+				+ TimeStrUtil.changeTime2Path(args[1], args[2]) + Configuration.getFileName(args[3], args[1]), // ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½macï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 				
-				SomeText.RUDIANLIANG_TMP_PATH, // ÁÙÊ±ÎÄ¼þ
+				Configuration.RUDIANLIANG_TMP_PATH, // ï¿½ï¿½Ê±ï¿½Ä¼ï¿½
 				
-				SomeText.RUDIANLIANG_PEOPLE_ROOT_PATH + args[0] + "/" + SomeText.getTimeThresholdPath(args[2])
-						+ TimeStrUtil.changeTime2Path(args[1], args[2]) + SomeText.getFileName(args[3], args[1]) }; // ×îÖÕ½á¹ûÊä³öÂ·¾¶
+				Configuration.RUDIANLIANG_PEOPLE_ROOT_PATH + args[0] + "/" + Configuration.getTimeThresholdPath(args[2])
+						+ TimeStrUtil.changeTime2Path(args[1], args[2]) + Configuration.getFileName(args[3], args[1]) }; // ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 
 
-		Configuration conf = new Configuration();
+		org.apache.hadoop.conf.Configuration conf = new org.apache.hadoop.conf.Configuration();
 
-		// µÚÒ»¸öjobµÄÅäÖÃ
-		Job job1 = new Job(conf, "ÇåÏ´×÷Òµ");
+		// ï¿½ï¿½Ò»ï¿½ï¿½jobï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		Job job1 = new Job(conf, "ï¿½ï¿½Ï´ï¿½ï¿½Òµ");
 		JobConf jobConf = new JobConf();
 		jobConf.setNumMapTasks(2);
 		jobConf.setNumReduceTasks(2);
@@ -71,16 +70,16 @@ public class StoreJobLauncher implements IJob{
 		// Reducer<Text, Text, Text, LongWritable>
 		job1.setReducerClass(InToStoreReducer.class);
 
-		job1.setMapOutputKeyClass(Text.class);// map½×¶ÎµÄÊä³öµÄkey
-		job1.setMapOutputValueClass(Text.class);// map½×¶ÎµÄÊä³öµÄvalue
+		job1.setMapOutputKeyClass(Text.class);// mapï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½key
+		job1.setMapOutputValueClass(Text.class);// mapï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½value
 
-		job1.setOutputKeyClass(Text.class);// reduce½×¶ÎµÄÊä³öµÄkey
-		job1.setOutputValueClass(LongWritable.class);// reduce½×¶ÎµÄÊä³öµÄvalue
+		job1.setOutputKeyClass(Text.class);// reduceï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½key
+		job1.setOutputValueClass(LongWritable.class);// reduceï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½value
 
 
 		Path outputPath = new Path(otherArgs[1]);
 		outputPath.getFileSystem(conf).delete(outputPath, true);
-		// job1µÄÊäÈëÊä³öÎÄ¼þÂ·¾¶
+		// job1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â·ï¿½ï¿½
 		FileInputFormat.addInputPath(job1, new Path(otherArgs[0]));
 		FileOutputFormat.setOutputPath(job1, new Path(otherArgs[1]));
 
@@ -106,12 +105,12 @@ public class StoreJobLauncher implements IJob{
 			e.printStackTrace();
 		}
 
-		// // ÔÚÏß³ÌÆô¶¯
+		// // ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½ï¿½ï¿½
 		// Thread t = new Thread(jobCtrl);
 		// t.start();
 		// while (true) {
 		// if (jobCtrl.allFinished()) {
-		// // Èç¹û×÷Òµ³É¹¦Íê³É£¬¾Í´òÓ¡³É¹¦×÷ÒµµÄÐÅÏ¢
+		// // ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½É¹ï¿½ï¿½ï¿½É£ï¿½ï¿½Í´ï¿½Ó¡ï¿½É¹ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½Ï¢
 		//
 		// InTheStore data1 = new InTheStore(args[1], args[0],
 		// "" +
@@ -137,54 +136,54 @@ public class StoreJobLauncher implements IJob{
 	 * public static void main(String[] args) throws IOException {
 	 * 
 	 * if (args.length < 4) { System.out.println("the args length less 2 exit");
-	 * System.exit(1); return; } // args[0] + SomeText.UNDERLINE + args[1] ÎÄ¼þÃû
-	 * // ÊäÈëµÄ²ÎÊýÓ¦¸ÃÊÇ µÚÒ»¸öÓÃ»§µÄÃû×Ö µÚ¶þ¸öÊ±¼äSomeText.getInputFilesName(args[3], args[1])
-	 * String[] otherArgs = { SomeText.INPUT_ROOT_PATH +
-	 * SomeText.getInputFilesName(args[3], args[1]), // ÐèÒª·ÖÎöµÄÎÄ¼þµÄÂ·¾¶
-	 * SomeText.RUDIANLIANG_MAC_ROOT_PATH + SomeText.getUserPath(args[0]) +
-	 * SomeText.getTimeThresholdPath(args[2]) +
+	 * System.exit(1); return; } // args[0] + Configuration.UNDERLINE + args[1] ï¿½Ä¼ï¿½ï¿½ï¿½
+	 * // ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¶ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Configuration.getInputFilesName(args[3], args[1])
+	 * String[] otherArgs = { Configuration.INPUT_ROOT_PATH +
+	 * Configuration.getInputFilesName(args[3], args[1]), // ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Â·ï¿½ï¿½
+	 * Configuration.RUDIANLIANG_MAC_ROOT_PATH + Configuration.getUserPath(args[0]) +
+	 * Configuration.getTimeThresholdPath(args[2]) +
 	 * TimeStrUtil.changeTime2Path(args[1], args[2]) +
-	 * SomeText.getFileName(args[3], args[1]), // ·ÖÎöµÃµ½µÄmacÐÅÏ¢µÄÊä³öÂ·¾¶
-	 * SomeText.RUDIANLIANG_TMP_PATH, // ÁÙÊ±ÎÄ¼þ
-	 * SomeText.RUDIANLIANG_PEOPLE_ROOT_PATH + args[0] + "/" +
-	 * SomeText.getTimeThresholdPath(args[2]) +
+	 * Configuration.getFileName(args[3], args[1]), // ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½macï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
+	 * Configuration.RUDIANLIANG_TMP_PATH, // ï¿½ï¿½Ê±ï¿½Ä¼ï¿½
+	 * Configuration.RUDIANLIANG_PEOPLE_ROOT_PATH + args[0] + "/" +
+	 * Configuration.getTimeThresholdPath(args[2]) +
 	 * TimeStrUtil.changeTime2Path(args[1], args[2]) +
-	 * SomeText.getFileName(args[3], args[1]) }; // ×îÖÕ½á¹ûÊä³öÂ·¾¶
+	 * Configuration.getFileName(args[3], args[1]) }; // ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	 * 
 	 * System.out.println(otherArgs[3]); // System.exit(1); Configuration conf =
-	 * new Configuration(); // µÚÒ»¸öjobµÄÅäÖÃ Job job1 = new Job(conf, "ÇåÏ´×÷Òµ");
+	 * new Configuration(); // ï¿½ï¿½Ò»ï¿½ï¿½jobï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Job job1 = new Job(conf, "ï¿½ï¿½Ï´ï¿½ï¿½Òµ");
 	 * job1.setJarByClass(StoreJobLauncher.class); // Mapper<LongWritable, Text,
 	 * Text, Text> job1.setMapperClass(InToStoreMapper.class); // Reducer<Text,
 	 * Text, Text, LongWritable> job1.setReducerClass(InToStoreReducer.class);
 	 * 
-	 * job1.setMapOutputKeyClass(Text.class);// map½×¶ÎµÄÊä³öµÄkey
-	 * job1.setMapOutputValueClass(Text.class);// map½×¶ÎµÄÊä³öµÄvalue
+	 * job1.setMapOutputKeyClass(Text.class);// mapï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½key
+	 * job1.setMapOutputValueClass(Text.class);// mapï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½value
 	 * 
-	 * job1.setOutputKeyClass(Text.class);// reduce½×¶ÎµÄÊä³öµÄkey
-	 * job1.setOutputValueClass(LongWritable.class);// reduce½×¶ÎµÄÊä³öµÄvalue
+	 * job1.setOutputKeyClass(Text.class);// reduceï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½key
+	 * job1.setOutputValueClass(LongWritable.class);// reduceï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½value
 	 * 
-	 * // // ¼ÓÈë¿ØÖÆÈÝÆ÷ // ControlledJob ctrljob1 = new ControlledJob(conf); //
-	 * ctrljob1.setJob(job1); // ÏÈÅÐ¶Ï job1 Êä³öÄ¿Â¼ÊÇ·ñ´æÔÚ Path outputPath = new
+	 * // // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ // ControlledJob ctrljob1 = new ControlledJob(conf); //
+	 * ctrljob1.setJob(job1); // ï¿½ï¿½ï¿½Ð¶ï¿½ job1 ï¿½ï¿½ï¿½Ä¿Â¼ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ Path outputPath = new
 	 * Path(otherArgs[1]); outputPath.getFileSystem(conf).delete(outputPath,
-	 * true); // job1µÄÊäÈëÊä³öÎÄ¼þÂ·¾¶ FileInputFormat.addInputPath(job1, new
+	 * true); // job1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â·ï¿½ï¿½ FileInputFormat.addInputPath(job1, new
 	 * Path(otherArgs[0])); FileOutputFormat.setOutputPath(job1, new
-	 * Path(otherArgs[1])); // // // µÚ¶þ¸ö×÷ÒµµÄÅäÖÃ ÈëµêÈËÊýµÄÍ³¼Æ // Job job2 = new
+	 * Path(otherArgs[1])); // // // ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½ // Job job2 = new
 	 * Job(conf, "in to store"); // job2.setJarByClass(StoreJobLauncher.class);
 	 * // // job2.setMapperClass(InToStoreCountMapper.class); // //
-	 * job2.setMapOutputKeyClass(Text.class);// map½×¶ÎµÄÊä³öµÄkey //
-	 * job2.setMapOutputValueClass(IntWritable.class);// map½×¶ÎµÄÊä³öµÄvalue // // //
-	 * job2.setOutputKeyClass(Text.class);//reduce½×¶ÎµÄÊä³öµÄkey // //
-	 * job2.setOutputValueClass(IntWritable.class);//reduce½×¶ÎµÄÊä³öµÄvalue // // //
-	 * ×÷Òµ2¼ÓÈë¿ØÖÆÈÝÆ÷ // ControlledJob ctrljob2 = new ControlledJob(conf); //
-	 * ctrljob2.setJob(job2); // // // ÉèÖÃ¶à¸ö×÷ÒµÖ±½ÓµÄÒÀÀµ¹ØÏµ // // ÈçÏÂËùÐ´£º // //
-	 * ÒâË¼Îªjob2µÄÆô¶¯£¬ÒÀÀµÓÚjob1×÷ÒµµÄÍê³É // // ctrljob2.addDependingJob(ctrljob1); // //
-	 * // ÊäÈëÂ·¾¶ÊÇÉÏÒ»¸ö×÷ÒµµÄÊä³öÂ·¾¶£¬Òò´ËÕâÀïÌîargs[1],ÒªºÍÉÏÃæ¶ÔÓ¦ºÃ //
+	 * job2.setMapOutputKeyClass(Text.class);// mapï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½key //
+	 * job2.setMapOutputValueClass(IntWritable.class);// mapï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½value // // //
+	 * job2.setOutputKeyClass(Text.class);//reduceï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½key // //
+	 * job2.setOutputValueClass(IntWritable.class);//reduceï¿½×¶Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½value // // //
+	 * ï¿½ï¿½Òµ2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ // ControlledJob ctrljob2 = new ControlledJob(conf); //
+	 * ctrljob2.setJob(job2); // // // ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ÒµÖ±ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ // // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ // //
+	 * ï¿½ï¿½Ë¼Îªjob2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½job1ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ // // ctrljob2.addDependingJob(ctrljob1); // //
+	 * // ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½args[1],Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ //
 	 * FileInputFormat.addInputPath(job2, new Path(otherArgs[1])); // Path
 	 * outputPath2 = new Path(otherArgs[2]); //
 	 * outputPath.getFileSystem(conf).delete(outputPath2, true); //
 	 * FileOutputFormat.setOutputPath(job2, new Path(otherArgs[2])); // // //
-	 * Ö÷µÄ¿ØÖÆÈÝÆ÷£¬¿ØÖÆÉÏÃæµÄ×ÜµÄÁ½¸ö×Ó×÷Òµ // JobControl jobCtrl = new
-	 * JobControl("ru dian liang ctrl"); // // // Ìí¼Óµ½×ÜµÄJobControlÀï£¬½øÐÐ¿ØÖÆ //
+	 * ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµ // JobControl jobCtrl = new
+	 * JobControl("ru dian liang ctrl"); // // // ï¿½ï¿½Óµï¿½ï¿½Üµï¿½JobControlï¿½ï£¬ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½ï¿½ //
 	 * jobCtrl.addJob(ctrljob1); // jobCtrl.addJob(ctrljob2);
 	 * 
 	 * try { if(job1.waitForCompletion(true)){ InTheStore data1 = new
@@ -207,8 +206,8 @@ public class StoreJobLauncher implements IJob{
 	 * 
 	 * e.printStackTrace(); }
 	 * 
-	 * // // ÔÚÏß³ÌÆô¶¯ // Thread t = new Thread(jobCtrl); // t.start(); // while
-	 * (true) { // if (jobCtrl.allFinished()) { // // Èç¹û×÷Òµ³É¹¦Íê³É£¬¾Í´òÓ¡³É¹¦×÷ÒµµÄÐÅÏ¢ // //
+	 * // // ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½ï¿½ï¿½ // Thread t = new Thread(jobCtrl); // t.start(); // while
+	 * (true) { // if (jobCtrl.allFinished()) { // // ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½É¹ï¿½ï¿½ï¿½É£ï¿½ï¿½Í´ï¿½Ó¡ï¿½É¹ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½Ï¢ // //
 	 * InTheStore data1 = new InTheStore(args[1], args[0], // "" +
 	 * job1.getCounters().findCounter(VisitLivenessRecorder2.TotalRecorder).
 	 * getValue(), // "" +

@@ -1,6 +1,6 @@
 package com.wifitz.joblaunchers;
 
-import org.apache.hadoop.conf.Configuration;
+import com.wifitz.utils.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -15,7 +15,6 @@ import com.wifitz.mapreduce.MacMergedReducer;
 import com.wifitz.mapreduce.MacMergedReducer.FileRecorder;
 import com.wifitz.utils.HdfsUtil;
 import com.wifitz.utils.JsonUtil;
-import com.wifitz.utils.SomeText;
 import com.wifitz.utils.TimeStrUtil;
 
 /**
@@ -40,21 +39,21 @@ public class KeLiuLiangJobLauncher implements IJob{
 			System.exit(1);
 			return;
 		}
-		// args[0] + SomeText.UNDERLINE + args[1] 文件名
+		// args[0] + Configuration.UNDERLINE + args[1] 文件名
 		// 输入的参数应该是 第一个用户的名字 第二个时间
-		// args[0] + SomeText.UNDERLINE + args[1] 文件名
+		// args[0] + Configuration.UNDERLINE + args[1] 文件名
 		// 输入的参数应该是 第一个用户的名字 第二个时间SomeText.getInputFilesName(args[3], args[1])
-		String[] otherArgs = { SomeText.INPUT_ROOT_PATH + SomeText.getInputFilesName(args[3], args[1]), // 需要分析的文件的路径
+		String[] otherArgs = { Configuration.INPUT_ROOT_PATH + Configuration.getInputFilesName(args[3], args[1]), // 需要分析的文件的路径
 		//String[] otherArgs = { args[4], 		
-				SomeText.KELIULIANG_MAC_ROOT_PATH + args[0] + "/" + SomeText.getTimeThresholdPath(args[2])
-				+ TimeStrUtil.changeTime2Path(args[1], args[2]) + SomeText.getFileName(args[3], args[1]) , // 分析得到的mac信息的输出路径
+				Configuration.KELIULIANG_MAC_ROOT_PATH + args[0] + "/" + Configuration.getTimeThresholdPath(args[2])
+				+ TimeStrUtil.changeTime2Path(args[1], args[2]) + Configuration.getFileName(args[3], args[1]) , // 分析得到的mac信息的输出路径
 				
-				SomeText.KELIULIANG_TMP_PATH, // 临时文件
+				Configuration.KELIULIANG_TMP_PATH, // 临时文件
 				
-				SomeText.KELIULIANG_PEOPLE_ROOT_PATH+ args[0] + "/" + SomeText.getTimeThresholdPath(args[2])
-						+ TimeStrUtil.changeTime2Path(args[1], args[2]) + SomeText.getFileName(args[3], args[1]) };
+				Configuration.KELIULIANG_PEOPLE_ROOT_PATH+ args[0] + "/" + Configuration.getTimeThresholdPath(args[2])
+						+ TimeStrUtil.changeTime2Path(args[1], args[2]) + Configuration.getFileName(args[3], args[1]) };
 
-		Configuration conf = new Configuration();
+		org.apache.hadoop.conf.Configuration conf = new org.apache.hadoop.conf.Configuration();
 		// 第一个job的配置
 		Job job1 = new Job(conf, "清洗作业");
 		job1.setJarByClass(KeLiuLiangJobLauncher.class);
@@ -102,17 +101,17 @@ public class KeLiuLiangJobLauncher implements IJob{
 			System.exit(1);
 			return;
 		}
-		// args[0] + SomeText.UNDERLINE + args[1] 文件名f
+		// args[0] + Configuration.UNDERLINE + args[1] 文件名f
 		// 输入的参数应该是 第一个用户的名字 第二个时间
-		// args[0] + SomeText.UNDERLINE + args[1] 文件名
+		// args[0] + Configuration.UNDERLINE + args[1] 文件名
 		// 输入的参数应该是 第一个用户的名字 第二个时间SomeText.getInputFilesName(args[3], args[1])
-		String[] otherArgs = { SomeText.INPUT_ROOT_PATH + SomeText.getInputFilesName(args[3], args[1]), // 需要分析的文件的路径
-				SomeText.KELIULIANG_MAC_ROOT_PATH + SomeText.getUserPath(args[0])
-						+ SomeText.getTimeThresholdPath(args[2]) + TimeStrUtil.changeTime2Path(args[1], args[2])
-						+ SomeText.getFileName(args[3], args[1]), // 分析得到的mac信息的输出路径
-				SomeText.KELIULIANG_TMP_PATH, // 临时文件
-				SomeText.KELIULIANG_PEOPLE_ROOT_PATH+ args[0] + "/" + SomeText.getTimeThresholdPath(args[2])
-						+ TimeStrUtil.changeTime2Path(args[1], args[2]) + SomeText.getFileName(args[3], args[1]) };
+		String[] otherArgs = { Configuration.INPUT_ROOT_PATH + Configuration.getInputFilesName(args[3], args[1]), // 需要分析的文件的路径
+				Configuration.KELIULIANG_MAC_ROOT_PATH + Configuration.getUserPath(args[0])
+						+ Configuration.getTimeThresholdPath(args[2]) + TimeStrUtil.changeTime2Path(args[1], args[2])
+						+ Configuration.getFileName(args[3], args[1]), // 分析得到的mac信息的输出路径
+				Configuration.KELIULIANG_TMP_PATH, // 临时文件
+				Configuration.KELIULIANG_PEOPLE_ROOT_PATH+ args[0] + "/" + Configuration.getTimeThresholdPath(args[2])
+						+ TimeStrUtil.changeTime2Path(args[1], args[2]) + Configuration.getFileName(args[3], args[1]) };
 
 		Configuration conf = new Configuration();
 		// 第一个job的配置
